@@ -1,0 +1,1 @@
+#### Created an M script for Power Query / Power BI an a Python replacemet for a poorly desgined API for someone.
