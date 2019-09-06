@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 import json
 import requests
@@ -7,8 +7,8 @@ from pandas.io.json import json_normalize
 from recursivejson import extract_values
 
 
-keys = {"MCAPIKeyPublic": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        "MCAPIKeySecret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}
+keys = {"MCAPIKeyPublic": "0919b40440994633bd1dae39efcb9abc",
+        "MCAPIKeySecret": "1173d0ec6d57489c8b43c73394049a58"}
 
 r = requests.post('http://apibeta.membercentral.com/v1/authenticate', json=keys)
 

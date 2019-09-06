@@ -1,5 +1,6 @@
-# recursivejson.py
-
+#!/usr/bin/env python3
+import sys
+import json
 
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
@@ -20,3 +21,13 @@ def extract_values(obj, key):
 
     results = extract(obj, arr, key)
     return results
+
+
+if __name__ == '__main__':
+    """ 
+    Run file as standalone script
+    """
+    if sys.stdin.isatty():
+        filename = sys.argv[-2]
+        key = sys.argv[-1]
+        extract_values(filename, key)
