@@ -1,6 +1,10 @@
+
+
 import json
 import requests
+import pandas as pd
 from pandas.io.json import json_normalize
+from recursivejson import extract_values
 
 
 keys = {"MCAPIKeyPublic": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -12,12 +16,30 @@ token = r.json()
 token = token["data"]["token"]
 token = {'Authorization': 'Bearer ' + token}
 
-membersURL = 'http://apibeta.membercentral.com/v1/member'
+members_url = 'http://apibeta.membercentral.com/v1/member'
 params = {"count": 10000}
 
-req = requests.get(membersURL, json=params, headers=token)
+req = requests.get(members_url, json=params, headers=token)
 
-members = req.json()
-members["data"]["members"]
+# Get linst index of all member URIs
+member_index = extract_values(req.json(), 'x-api-uri')
 
-out = json_normalize(members["data"]["members"])
+# Iterate calls to member URIs
+data = []
+base_url = 'http://apibeta.membercentral.com'
+for uri in member_index:
+    member_uri = base_url + str(uri)
+    response = requests.get(member_uri, headers=token)
+    if response.status_code == 200:
+        data.append(response.json()["data"]["member"])
+    else:
+        print(response.text)
+        print(response.status_code)
+
+
+
+out = json_normalize(data)
+out.to_csv('Members.csv')
+
+member_index = pd.DataFrame({'Member_URIs': member_index})
+member_index.to_csv('Member_index.csv')
